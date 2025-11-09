@@ -1,0 +1,39 @@
+Log_Location=log_location
+Steam_Username=your_steam_username
+Debug_Info=false
+Show_All_Info=false
+Show_Player_Connection_Info=true
+Show_Other_Player_Connection_Info=true
+Show_Player_Side_Switch_Info=true
+Show_Other_Player_Side_Switch_Info=true
+Show_New_Mission_Loading_Info=true
+Show_New_Mission_Info=true
+Show_Battle_Start_Info=true
+Show_Battle_End_Info=true
+Show_Destruction_Info=true
+Show_Unrelated_Destruction_Info=true
+Show_Landing_Info=true
+Show_Unrelated_Landing_Info=true
+Show_Bail_Info=true
+Show_Unrelated_Bail_Info=true
+Show_Crash_Info=true
+Show_Unrelated_Crash_Info=true
+Show_Other_Player_Profiles=true
+Show_Chat=true
+Colour_Enabled=false
+Colour_FG=false
+
+# The above have to stay in that specific order
+
+# The chars on the left of the "=" are not necessary;
+# But they are there for ease-of-use and convenience
+
+# Some Operating Systems or CLIs do not support colour.
+# If your Operating System or CLI does not support colour,
+# then set "Colour_Enabled" to "false".
+
+# "Colour_FG" is set to true or false.
+# If it is true, the colour will be applied to the Font (and black background);
+# if it is false, the colour will be applied to the background (and black font).
+# If "Colour_Enabled" is set to false; it does not matter what the value of
+# "Colour_FG" is.
