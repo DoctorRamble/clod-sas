@@ -126,10 +126,8 @@ ALL DONE! You can now use the programme! Happy flying!
 * Please note that this programme may not work on all terminals, operating systems, distros or desktop environments.
 
 ## Contact Info
-If you need any support or have found bugs you can reach me:
-GitHub: "https://github.com/DoctorRamble"
-Via the ATAG forum post: 
-If it is bug-related, please include your "log.txt" file (or at least the line that is broken) and send a screenshot of what is broken.
+If you need any support or have found bugs you can reach me on [Github](https://github.com/DoctorRamble/clod-sas) or the Cliffs of Dover ATAG forums (To Be Posted).
+If it is bug-related, please include the contents of your "log.txt" file (or at least the line that is broken).
 
 ### About the code
 1. The code for this programme is contained in a single file.
