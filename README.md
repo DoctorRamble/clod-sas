@@ -255,88 +255,89 @@ The categories this programme aims to process:
 * (username) has changed to the (side) side.
 * (username) is now with the (side) army.
 * (username) has switched to (side).
---> Becomes: "At (time) (username) enlisted in the (side) forces."
+*  Becomes: "At (time) (username) enlisted in the (side) forces."
 
 ### Connection Information
 * (username) enters the battle.
 * (username) is now connected.
 * (username) joins the server.
---> Becomes: "At (time) (username) connected to the server."
+*  Becomes: "At (time) (username) connected to the server."
 ### Disconnection Information
 * Goodbye, (username)!
 * (username) leaves the server.
---> Becomes: "At (time) (username) disconnected from the server."
+*  Becomes: "At (time) (username) disconnected from the server."
 
 ### Landing Information
 * (username) returned to base.
 * (username) is safe on the ground.
 * (username) crash landed.
 * (username) landed.
---> Becomes: "At (time) (username) landed."
-Or if a crash landing: "At (time) (username) crash landed."
+*  Becomes: "At (time) (username) landed."
+*  Or if a crash landing: "At (time) (username) crash landed."
 ### Crash Information
 * (entity) collided with terrain.
 * (entity) crashed.
---> Becomes: "At (time) (name) in a (aircraft) crashed."
+*  Becomes: "At (time) (name) in a (aircraft) crashed."
 
 ### Bail-Out Information
 * (entity) had to jump.
 * (entity) hit the silk.
---> Becomes: "At (time) (name) of a (aircraft) bailed out."
+*  Becomes: "At (time) (name) of a (aircraft) bailed out."
 
 ### Successfully Parachuted to the Ground Information
 * (username) parachuted to the ground.
---> Becomes: "At (time) (username) parachuted to the ground.
+*  Becomes: "At (time) (username) parachuted to the ground.
 
 ### Unsuccessfully Parachute to the Ground Information
 * (username)'s parachute failed to deploy.
+*  Becomes: "At (time) (username)'s parachute failed to deploy."
 
 ### Destruction Information
 ==> Note: "At (time) " is at the beginning of the following outputs.
 * (entity) was shot down by (entity).
---> Becomes: "(entity) destroyed (entity)."
+*  Becomes: "(entity) destroyed (entity)."
 * (entity) was shot down by (entity), (entity), (etc).
---> Becomes: "(entity), (entity), (etc), destroyed (entity).
+*  Becomes: "(entity), (entity), (etc), destroyed (entity).
 * (entity) shot down (entity).
---> Becomes: "(entity) destroyed (entity)."
+*  Becomes: "(entity) destroyed (entity)."
 * (entity), (entity), (etc) destroyed (entity).
---> Becomes: "(entity), (entity), (etc), destroyed (entity)."
+*  Becomes: "(entity), (entity), (etc), destroyed (entity)."
 * (entity) is no more.
---> Becomes: "(name) in a (aircraft) is no more."
+*  Becomes: "(name) in a (aircraft) is no more."
 * (entity) sank (entity).
---> Becomes: "(entity) sank (entity)."
+*  Becomes: "(entity) sank (entity)."
 * (entity), (entity), (etc) sank (entity).
---> Becomes: "(entity), (entity), (etc), sank (entity)."
+*  Becomes: "(entity), (entity), (etc), sank (entity)."
 * (entity) goes down thanks to (entity).
---> Becomes: "(entity) sank (entity)."
+*  Becomes: "(entity) sank (entity)."
 * (entity) goes down thanks to (entity), (entity), (etc).
---> Becomes: "(entity), (entity), (etc), sank (entity).
+*  Becomes: "(entity), (entity), (etc), sank (entity).
 * (entity) was destroyed.
---> Becomes: "(entity) was destroyed."
+*  Becomes: "(entity) was destroyed."
 * (entity) destroyed (entity).
---> Becomes: "(entity) destroyed (entity)."
+*  Becomes: "(entity) destroyed (entity)."
 * (entity), (entity), (etc) destroyed (entity).
---> Becomes: "(entity), (entity), (etc), destroyed (entity)."
+*  Becomes: "(entity), (entity), (etc), destroyed (entity)."
 * (entity) was destroyed by (entity).
---> Becomes: "(entity) destroyed (entity)."
+*  Becomes: "(entity) destroyed (entity)."
 * (entity) was destroyed by (entity), (entity), (etc).
---> Becomes: "(entity), (entity), (etc), destroyed (entity)."
+*  Becomes: "(entity), (entity), (etc), destroyed (entity)."
 * (entity) claimed (entity).
---> Becomes: "(entity) destroyed (entity)."
+*  Becomes: "(entity) destroyed (entity)."
 * (entity), (entity), (etc) claimed (entity).
---> Becomes: "(entity), (entity), (etc), destroyed (entity).
+*  Becomes: "(entity), (entity), (etc), destroyed (entity).
 * (entity) was blown up by (entity) before he could take off.
---> Becomes: "(entity) blew up (entity)."
+*  Becomes: "(entity) blew up (entity)."
 * (entity) was blown up by (entity), (entity), (etc) before he could take off.
---> Becomes: "(entity), (entity), (etc), blew up (entity)."
+*  Becomes: "(entity), (entity), (etc), blew up (entity)."
 * (entity) claimed a friendly kill: (entity).
---> Becomes: (entity) destroyed a friendly (entity).
+*  Becomes: (entity) destroyed a friendly (entity).
 * (entity), (entity), (etc) claimed a friendly kill: (entity)
---> Becomes: "(entity), (entity), (etc), destroyed a friendly (entity)."
+*  Becomes: "(entity), (entity), (etc), destroyed a friendly (entity)."
 
 ### Chat Information
 * Chat: (username):    (message)
---> Becomes: "At (time) (username) sent: (message) in chat."
+*  Becomes: "At (time) (username) sent: (message) in chat."
 
 ### Known Still Need:
 * "(username) defected to the (side) team." <-- Still Around?
