@@ -1803,8 +1803,15 @@ void destructionInfo(std::string string) {
 			//
 			std::string get_aircraft = destroyed.substr(0, y);
 			destroyed = destroyed.substr(y + 10);
-			std::string get_name = destroyed.substr(0, destroyed.length() - 2);
-			// Set message
+			std::string get_name;
+			if (user_system == "Windows") {
+				get_name = destroyed.substr(0, destroyed.length() - 1);
+				destroyed = get_name + " in a " + get_aircraft;
+			}
+			else if (user_system == "Linux") {
+				get_name = destroyed.substr(0, destroyed.length() - 2);
+			}
+			// Create Message
 			destroyed = get_name + " in a " + get_aircraft + ".";
 			element_mod = element_mod.substr(x + 2);
 			// Checks if player is in player list and adds score
@@ -3981,5 +3988,6 @@ void addPlayerMessageSent(std::string player_name) {
 	}
 
 }
+
 
 
