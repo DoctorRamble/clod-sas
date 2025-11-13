@@ -1799,7 +1799,7 @@ void destructionInfo(std::string string) {
 			destroyed = destroyed.substr(y + 10);
 			std::string get_name = destroyed.substr(0, destroyed.length() - 2);
 			// Set message
-			destroyed = get_name + " in a " + get_aircraft;
+			destroyed = get_name + " in a " + get_aircraft + ".";
 			element_mod = element_mod.substr(x + 2);
 			// Checks if player is in player list and adds score
 			if (get_name != "AI" && get_name != "a friendly AI" && get_name.find("(AI)") == std::string::npos) {
@@ -3975,3 +3975,4 @@ void addPlayerMessageSent(std::string player_name) {
 	}
 
 }
+
