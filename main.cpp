@@ -25,6 +25,12 @@ std::string config_location;
 std::string log_location;
 // Your Steam Name
 std::string username;
+// Version
+std::string version = "v0.1-5";
+// Last Updated
+std::string last_updated = "2025-11-13";
+// CloD Version
+std::string game_ver = "v5.046";
 // Used for aborting if OS is not supported
 bool _OSUnsupported = false;
 // Should the programme show debug info?
@@ -157,12 +163,12 @@ int main(int argc, char* argv[]) {
 	if (!_OSUnsupported) {
 		load_config();
 		if (_colour) {
-		std::cout << "\n\033[32;40mRamble's CloD \033[31;40mServer \033[37;40mActivity \033[34;40mStatistics\033[32;40m - v0.1-5\033[39m\033[49m\n";
+		std::cout << "\n\033[32;40mRamble's CloD \033[31;40mServer \033[37;40mActivity \033[34;40mStatistics\033[32;40m - " << version << "\033[39m\033[49m\n";
 		}
 		else {
-			std::cout << "\nRamble's CloD Server Activity Statistics - v0.1-5\n";
+			std::cout << "\nRamble's CloD Server Activity Statistics - " << version << "\n";
 		}
-		std::cout << "Last Updated: 2025-11-10; CloD Version: v5.046;\n\n";
+		std::cout << "Last Updated: "<< last_updated << "; CloD Version: " << game_ver << ";\n\n";
 		load_log();
 		process_log();
 		printProcLog();
@@ -3975,4 +3981,5 @@ void addPlayerMessageSent(std::string player_name) {
 	}
 
 }
+
 
