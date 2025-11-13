@@ -157,10 +157,10 @@ int main(int argc, char* argv[]) {
 	if (!_OSUnsupported) {
 		load_config();
 		if (_colour) {
-		std::cout << "\n\033[32;40mRamble's CloD \033[31;40mServer \033[37;40mActivity \033[34;40mStatistics\033[32;40m - v0.1-3\033[39m\033[49m\n";
+		std::cout << "\n\033[32;40mRamble's CloD \033[31;40mServer \033[37;40mActivity \033[34;40mStatistics\033[32;40m - v0.1-5\033[39m\033[49m\n";
 		}
 		else {
-			std::cout << "\nRamble's CloD Server Activity Statistics - v0.1-4\n";
+			std::cout << "\nRamble's CloD Server Activity Statistics - v0.1-5\n";
 		}
 		std::cout << "Last Updated: 2025-11-10; CloD Version: v5.046;\n\n";
 		load_log();
@@ -1797,7 +1797,7 @@ void destructionInfo(std::string string) {
 			//
 			std::string get_aircraft = destroyed.substr(0, y);
 			destroyed = destroyed.substr(y + 10);
-			std::string get_name = destroyed.substr(0, destroyed.length() - 1);
+			std::string get_name = destroyed.substr(0, destroyed.length() - 2);
 			// Set message
 			destroyed = get_name + " in a " + get_aircraft;
 			element_mod = element_mod.substr(x + 2);
@@ -3973,4 +3973,5 @@ void addPlayerMessageSent(std::string player_name) {
 			session_players[i][10] = std::to_string(std::stoi(session_players[i][10]) + 1);
 		}
 	}
+
 }
