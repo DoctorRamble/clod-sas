@@ -126,7 +126,7 @@ ALL DONE! You can now use the programme! Happy flying!
 * Please note that this programme may not work on all terminals, operating systems, distros or desktop environments.
 
 ## Contact Info
-If you need any support or have found bugs you can reach me on [Github](https://github.com/DoctorRamble/clod-sas) or the Cliffs of Dover ATAG forums (To Be Posted).
+If you need any support or have found bugs you can reach me on [Github](https://github.com/DoctorRamble/clod-sas), the Cliffs of Dover ATAG forums (To Be Posted) or the [IL-2 Sturmovik Forums](https://forum.il2sturmovik.com/profile/433135-doctor_ramble/). I will do my best to get back to you as soon as possible.
 If it is bug-related, please include the contents of your "log.txt" file (or at least the line that is broken).
 
 ### About the code
@@ -139,14 +139,15 @@ I do not want this to be the user's experience. So even though it is not proper,
 
 2. I am only a hobbyist programmer, so the code contained in the programme will not be up to professional standards and there are probably some much more efficient ways to do what I have done.
 I might come back to this project in a couple of years time when I am better and fix it up.
-This programme was not created with the assistance of AI coding tools.
 
-3. There are A LOT of comments in this project. And many people may feel like I am over-commenting.
+3. This programme was not created with the assistance of AI coding tools.
+
+4. There are A LOT of comments in this project. And many people may feel like I am over-commenting.
 I have purposely "over-commented" the code in case anyone who is not a programmer wants to read through it.
 (To check for malware, are curious, etc.,.)
 Reading the programme down you can see that it can sort of be read like a scroll.
 
-4. Version naming scheme.
+5. Version naming scheme.
 "v<x>-<y>". Where <x> is the major version number (decimal) and <y> is a minor version number (hexadecimal... because it looks cool).
 A MAJOR version would be a new feature of some sort being added. E.g. Pilot/crew-member deaths.
 Or some other recognition for an existing feature. E.g. Under crash info recognition there needs to be "<player> took off badly and crashed.".
@@ -159,6 +160,7 @@ v1.0 has not been released. The version number will reach v1.0 whenever I feel l
 ## Known Limitations/Bugs
 * If your username is, for example "Spitfire", then the programme may think any line with "Spitfire" in it is related to your username.
 * If your username contains, "(AI)" then the programme will think that you are an AI and will not add your player profile.
+* Some things work in Linux, but don't in Windows and vice versa. This is due to the way this programme was developed: some features were programmed in while I was using Linux, and some when I was using Windows. I cannot bug-test Windows and Linux equally, so if you find any bugs where information isn't displayed correctly, it may be due to this. Be sure to [contact me](#contact-info) about the error and include the broken line and your OS info.
 
 ## "config.txt"
 This programme loads information from "./config/config.txt".
@@ -339,7 +341,7 @@ Or if a crash landing: "At (time) (username) crash landed."
 ### Known Still Need:
 * "(username) defected to the (side) team." <-- Still Around?
 
-Contact me if you have found more messages that need adding.
+[Contact me](#contact-info) if you have found more messages that need adding.
 If you can replicate it and provide multiple examples (maybe screenshots?) and/or instructions, please do so.
 
 ## Acknowledgements
