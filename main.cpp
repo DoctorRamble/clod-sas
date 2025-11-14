@@ -28,7 +28,7 @@ std::string username;
 // Version
 std::string version = "v0.1-5";
 // Last Updated
-std::string last_updated = "2025-11-13";
+std::string last_updated = "2025-11-14";
 // CloD Version
 std::string game_ver = "v5.046";
 // Used for aborting if OS is not supported
@@ -3992,6 +3992,7 @@ void addPlayerMessageSent(std::string player_name) {
 	}
 
 }
+
 
 
 
