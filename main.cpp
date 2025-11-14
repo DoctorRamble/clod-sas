@@ -1508,6 +1508,10 @@ void bailInfo(std::string string) {
 		else if (_bailInfo && element_mod.find(username) != std::string::npos) {
 			log_processed.push_back("= At " + get_time + " " + element_mod);
 		}
+		// Gets username and adds to death count.
+		std::string get_username = element_mod.substr(0, element_mod.find_first_of("'"));
+		checkPlayerInList(get_username);
+		addPlayerDeath(get_username);
 	}
 }
 
@@ -3988,6 +3992,7 @@ void addPlayerMessageSent(std::string player_name) {
 	}
 
 }
+
 
 
 
