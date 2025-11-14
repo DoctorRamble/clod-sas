@@ -153,6 +153,7 @@ A MAJOR version would be a new feature of some sort being added. E.g. Pilot/crew
 Or some other recognition for an existing feature. E.g. Under crash info recognition there needs to be "<player> took off badly and crashed.".
 A MINOR version would be a small fix or tweak. Examples would be a non-player entity getting its own profile or jumbled up text (means that an existing feature needs to be tweaked).
 An example of a version number would be "v0.2-1E5".
+Very minor updates might not get their own version name if they are deemed too small. E.g. Changing the "last_updated" date in the case that I had forgotten.
 
 Note:
 v1.0 has not been released. The version number will reach v1.0 whenever I feel like the programme is at least 95% bug-free and has most of the known messages in the categories I am aiming to process.
