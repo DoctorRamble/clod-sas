@@ -26,9 +26,9 @@ std::string log_location;
 // Your Steam Name
 std::string username;
 // Version
-std::string version = "v0.1-5";
+std::string version = "v0.1-6";
 // Last Updated
-std::string last_updated = "2025-11-14";
+std::string last_updated = "2025-11-18";
 // CloD Version
 std::string game_ver = "v5.046";
 // Used for aborting if OS is not supported
@@ -206,21 +206,8 @@ void load_config() {
 	config.close();
 
 	// Sets vars
-	/*
-	On Linux, when getting the string values, such as the user's Steam
-	username, it adds a mysterious extra character on the end which messes
-	the programme up.
-	*/
-	if (user_system == "Linux") {
-		log_location = getConfVal(config_contents[0]);
-		log_location = log_location.substr(0, log_location.length() - 1);
-		username = getConfVal(config_contents[1]);
-		username = username.substr(0, username.length() - 1);
-	}
-	else {
-		log_location = getConfVal(config_contents[0]);
-		username = getConfVal(config_contents[1]);
-	}
+	log_location = getConfVal(config_contents[0]);
+	username = getConfVal(config_contents[1]);
 	std::istringstream(getConfVal(config_contents[2])) >> std::boolalpha >> _debugInfo;
 	std::istringstream(getConfVal(config_contents[3])) >> std::boolalpha >> _allInfo;
 	std::istringstream(getConfVal(config_contents[4])) >> std::boolalpha >> _playerConnectionInfo;
@@ -3992,6 +3979,7 @@ void addPlayerMessageSent(std::string player_name) {
 	}
 
 }
+
 
 
 
