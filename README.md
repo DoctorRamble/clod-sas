@@ -46,7 +46,7 @@ e.g.: `C:\Users\YourUser\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\lo
 Also change the Steam Username to your Steam username. You can optionally leave this as "NULL".
 
 4. Navigate back to the main project directory of the programme (where the .cpp file is).
-Compile main.cpp" `g++ --std=c++17 main.cpp -o sas`
+Compile main.cpp: `g++ --std=c++17 main.cpp -o sas`
 
 5. After compiling you should see an executable file.
 Open your terminal and navigate to the root directory of the programme if you are not there already.
@@ -337,4 +337,4 @@ If you can replicate it and provide multiple examples (maybe screenshots?) and/o
 
 ## Acknowledgements
 * The folks at Team Fusion for maintaining the greatest WWII flight simulator! Thanks guys! :-)
-* Thanks to [https://theairtacticalassaultgroup.com/forum/member.php?u=287](ATAG_Snapper) for helping me create an account on the ATAG forums!
+* Thanks to [ATAG_Snapper](https://theairtacticalassaultgroup.com/forum/member.php?u=287) for helping me create an account on the ATAG forums!
