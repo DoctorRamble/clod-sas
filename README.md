@@ -25,13 +25,7 @@ This project was designed as an alternative to the CloD post-mission summary scr
 This programme can summarise the basic information of the "log.txt" file that CloD generates.
 Some information includes vehicle destruction information, bail out information and landing information.
 
-I have successfully run the programme on the following Systems:
-* Windows 10 Professional
-* Linux Mint 22.2 Cinnamon (Ubuntu/Debian based)
-* Commodore OS Vision 3 (MX Linux/Debian based)
-* CachyOS Cinnamon (Arch based)
-* Fedora 42 KDE Plasma
-* Debian 13 Cinnamon
+[ATAG Forums Post](https://theairtacticalassaultgroup.com/forum/showthread.php?t=39090&p=402785#post402785)
 
 ## Installation
 1. Clone/download the repository
@@ -126,8 +120,9 @@ ALL DONE! You can now use the programme! Happy flying!
 * Please note that this programme may not work on all terminals, operating systems, distros or desktop environments.
 
 ## Contact Info
-If you need any support or have found bugs you can reach me on [Github](https://github.com/DoctorRamble/clod-sas), the Cliffs of Dover ATAG forums (To Be Posted) or the [IL-2 Sturmovik Forums](https://forum.il2sturmovik.com/profile/433135-doctor_ramble/). I will do my best to get back to you as soon as possible.
-If it is bug-related, please include the contents of your "log.txt" file (or at least the line that is broken).
+If you need any support or have found bugs you can reach me on the Cliffs of Dover ATAG Forums [Profile](https://theairtacticalassaultgroup.com/forum/member.php?u=19096) [Thread](https://theairtacticalassaultgroup.com/forum/showthread.php?t=39090&p=402785#post402785) or the IL-2 Sturmovik Forums [Profile](https://forum.il2sturmovik.com/profile/433135-doctor_ramble/). I also have an email: "DRamble46@outlook.com", but please only use this if you have to (and no spam/junk please!).
+I will do my best to get back to you as soon as possible.
+If it is bug-related, please include the contents of your "log.txt" file (or at least the line that is broken) and your OS and Debug information (can be enabled by setting "Debug_Info" in the config to "true").
 
 ### About the code
 1. The code for this programme is contained in a single file.
@@ -142,12 +137,7 @@ I might come back to this project in a couple of years time when I am better and
 
 3. This programme was not created with the assistance of AI coding tools.
 
-4. There are A LOT of comments in this project. And many people may feel like I am over-commenting.
-I have purposely "over-commented" the code in case anyone who is not a programmer wants to read through it.
-(To check for malware, are curious, etc.,.)
-Reading the programme down you can see that it can sort of be read like a scroll.
-
-5. Version naming scheme.
+4. Version naming scheme.
 "v<x>-<y>". Where <x> is the major version number (decimal) and <y> is a minor version number (hexadecimal... because it looks cool).
 A MAJOR version would be a new feature of some sort being added. E.g. Pilot/crew-member deaths.
 Or some other recognition for an existing feature. E.g. Under crash info recognition there needs to be "<player> took off badly and crashed.".
@@ -172,13 +162,12 @@ Otherwise this is how to use it:
 The config.txt file consists of "variable_name=value"
 The "variable_name" part is just there to make it easier to modify. The programme
 can function with "=value" alone.
-
-Boolean values (will be noted below) accept a "true" or "false" value.
+Boolean values accept a "true" or "false" value.
 
 ### Lines:
 1. The Log Location :: String.
 Enter in the location of CloD's "log.txt" file.
-For Windows, it should be "C:\Users\username\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\"
+For Windows, it should be something like "C:\Users\username\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\"
 Append "log.txt" on the end. Example: "C:\Users\username\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt".
 2. Your Steam Username :: String.
 Enter in your Steam username. Optional.
@@ -219,7 +208,7 @@ If true, shows information related to entities bailing out of an aircraft even i
 If true, shows information related to aircraft crashes.
 Does not include crash landing, that is classified as a "good" landing.
 19. Show Unrelated Crash Info :: Boolean value.
-If ture, shows information related to aircraft crashes even if it does not contain the player's username.
+If true, shows information related to aircraft crashes even if it does not contain the player's username.
 20. Show Other Player Profiles :: Boolean value.
 If true, other player's statistics will be shown. Useful for multiplayer rounds.
 If you are not the server admin, you may have joined after the round was started.
@@ -348,3 +337,4 @@ If you can replicate it and provide multiple examples (maybe screenshots?) and/o
 
 ## Acknowledgements
 * The folks at Team Fusion for maintaining the greatest WWII flight simulator! Thanks guys! :-)
+* Thanks to [https://theairtacticalassaultgroup.com/forum/member.php?u=287](ATAG_Snapper) for helping me create an account on the ATAG forums!
