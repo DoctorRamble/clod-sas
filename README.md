@@ -64,7 +64,7 @@ Installation on different distros may vary. These commands should work:
 * Fedora-based Distros: `sudo dnf install gcc-c++`
 * Arch-based Distros: `sudo pacman -S gcc`
 ### Windows
-This [article](code.visualstudio.com/docs/cpp/config-mingw) by Microsoft should cover you.
+This [article](https://code.visualstudio.com/docs/cpp/config-mingw) by Microsoft should cover you.
 Watch the video or follow the instructions under "Installing the MinGW-w64 toolchain".
 You do not need to install Visual Studio Code.
 
