@@ -332,6 +332,11 @@ The categories this programme aims to process:
 ### Known Still Need:
 * "(username) defected to the (side) team." <-- Still Around?
 
+### To Do:
+* Add Message: "Friendly fire! (entity) destroyed (entity)."
+* Add command-line arguments.
+* Add output text file.
+
 [Contact me](#contact-info) if you have found more messages that need adding.
 If you can replicate it and provide multiple examples (maybe screenshots?) and/or instructions, please do so.
 
