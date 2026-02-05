@@ -62,9 +62,9 @@ Creating the following .bat/.sh script file will allow you to run the programme 
 
 2. Open "run_sas.bat" in notepad and enter in the following lines:
 ```
-	@echo off
-	start cmd /k "sas "your_steam_username" "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt" "C:\Users\Ramble\Desktop\SAS Output\\" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0""
-	#To End a string with a \, put two like so: \\
+@echo off
+start cmd /k "sas "your_steam_username" "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt" "C:\Users\Ramble\Desktop\SAS Output\\" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0""
+#To End a string with a \, put two like so: \\
 ```
 You should replace the above locations with the locations on your computer!
 To see what the arguments do go here: [Explaining the Arguments](#explaining-the-arguments)
@@ -86,10 +86,19 @@ If you rename it, make sure ".lnk" is still the extension at the end, this is th
 
 4. Open the script file in the text editor of your choice and enter in the following:
 ```
-	#! /bin/bash
-	gnome-terminal -- bash -c "/home/ramble/Documents/SAS/sas" "your_steam_username" ".../il-2 sturmovik cliffs of dover/log.txt" "/home/ramble/Desktop/SAS Output/" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0"; exec bash"
+#! /bin/bash
+gnome-terminal -- bash -c "/home/ramble/Desktop/Dev/clod-sas-arg/clod-sas-main/sas Doctor_Ramble /home/ramble/Desktop/log.txt /home/ramble/Desktop/SASOutput/ null 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0; exec bash"
 ```
+Replace the directories with your own.
+With this command you have to make sure NOT to have any spaces in it. Such as: "/home/ramble/Desktop/SAS Output/", instead, "/home/ramble/Desktop/SASOutput/"
+
+For the log.txt you will have to create a symbolic link to get around the "no spaces" rule. Take note of the directory your log.txt sits in and create a symlink to a directory (that has no spaces in it). Example:
+```
+ln -s "/home/ramble/.steam/debian-installation/steamapps/compatdata/754530/pfx/drive_c/users/steamuser/Documents/1C SoftClub/il-2 sturmovik cliffs of dover/log.txt" log.txt
+```
+
 To see what the arguments do go here: [Explaining the Arguments](#explaining-the-arguments)
+or type './sas help'
 
 * You can replace "gnome-terminal" with the terminal that is installed on your system.
 This may not work on all terminals or desktop environments.
