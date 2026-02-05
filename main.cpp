@@ -3,6 +3,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <ctime>
+#include <format>
 
 // For compiling:
 // g++ --std=c++20 main.cpp -o main
@@ -19,20 +22,24 @@
 std::string user_system;
 // Stores the executables location
 std::string exec_location;
-// Stores the location of "config.txt"
-std::string config_location;
+// Stores the directory to save the output *.txt file
+std::string output_dir;
+// File name to save if not null
+std::string output_name;
 // Location of "log.txt"
 std::string log_location;
 // Your Steam Name
 std::string username;
 // Version
-std::string version = "v0.1-7";
+std::string version = "v0.2-0";
 // Last Updated
-std::string last_updated = "2026-02-01";
+std::string last_updated = "2026-02-05";
 // CloD Version
 std::string game_ver = "v5.046";
 // Used for aborting if OS is not supported
 bool _OSUnsupported = false;
+// Should the programme save an output text file?
+bool _outputFile;
 // Should the programme show debug info?
 bool _debugInfo;
 // Should ALL info be kept?
@@ -72,6 +79,8 @@ bool _showChat;
 bool _colour;
 // Background/Font colour
 bool _colourFG;
+// Should SAS be run headless (just saves to a text file, no text output)
+bool _headless;
 
 // Used for getting each line of "log.txt"
 std::string log_lines;
@@ -83,6 +92,8 @@ std::vector<std::string> log_contents;
 std::vector<std::string> config_contents;
 // Contains processed "log.txt"
 std::vector<std::string> log_processed;
+// Stores lines for outputting to a file
+std::vector<std::string> output_lines;
 // Stores the list of players in the session
 // {{ name, side, score, landings, reserve, deaths, crashes, bailouts, connections, disconnections, messages_sent }, ...}
 std::vector<std::vector<std::string>> session_players;
@@ -91,14 +102,16 @@ std::vector<std::vector<std::string>> session_players;
 void clr();
 // Gets the index of a sub-string in a string
 int findStrIndex(const std::string& str, const std::string& sub_str);
-// Gets value of a config line and returns it
-std::string getConfVal(std::string conf_line);
-// Loads "config.txt"
-void load_config();
+// Returns the current Date & Time
+std::string getDateTime(bool timeMode);
+// Converts a string number to a bool
+bool strToBool(const std::string& str);
 // Opens & Loads "log.txt" into a vector
 void load_log();
 // Processes "log.txt" and gets statistics
 void process_log();
+// Saves the contents of output_lines to a file
+void saveFile();
 // Gets the date and/or time from a string
 std::string getDateTime(std::string string);
 // Checks if the player is in the "session_players" list
@@ -139,7 +152,8 @@ int main(int argc, char* argv[])
 #ifdef WINDOWS
 	user_system = "Windows";
 #endif
-	if (user_system == "Windows" || user_system == "Linux")
+	
+    if (user_system == "Windows" || user_system == "Linux")
 	{
 		std::cout << "--! " << user_system << " was detected.\n";
 		if (user_system == "Linux")
@@ -148,41 +162,177 @@ int main(int argc, char* argv[])
 		}
 	}
 	else
-	{
-		std::cout << "--! Your OS is unsupported. Please try again on Windows or Linu... GNU/Linux.\n";
+	{ 
+		std::cout << "--!  Bail Out! Bail Out!\n     Your OS is unsupported! Please try again on Windows or GNU/Linux.\n";
+		output_lines.push_back("--!  Bail Out! Bail Out!\n     Your OS is unsupported! Please try again on Windows or GNU/Linux.");
 		_OSUnsupported = true;
 	}
 
-	// Sets the location for "config.txt"
-	// Should be: $MainExecDir/config/config.txt
-	std::string argv_str(argv[0]);
-	if (user_system == "Windows")
+	// Load Arguments
+    std::string initial_arg = argv[1];
+	if (initial_arg == "help")
 	{
-		exec_location = argv_str.substr(0, argv_str.find_last_of("\\"));
-		config_location = ".\\config\\config.txt";
+		std::cout << "Help info for SAS\n"
+			<< "SAS Version: " << version << "\n"
+			<< "Last Updated: " << last_updated << "\n"
+			<< "\nGitHub Page: https://www.github.com/DoctorRamble/clod-sas\n"
+			<< "ATAG Post: https://theairtacticalassaultgroup.com/forum/showthread.php?t=39090\n";
+		std::cout << "\nHow to call the programme in the command line:\n"
+			<< "exec_name \"username\" \"log_location\" \"output_dir\" _outputFile _debugInfo _allInfo _playerConnectionInfo _otherPlayerConnectionInfo _sideSwitchInfo _otherPlayerSideSwitchInfo _newMissionLoadInfo _newMissionInfo _battleStartedInfo _battleEndInfo _destructionInfo _destructionUnrelatedInfo _landingInfo _otherLandingInfo _bailInfo _otherBailInfo _crashInfo _otherCrashInfo _otherPlayerStats _showChat _colour _colourFG _headless\n\n"
+			<< "\tusername                   :: String :: Your Steam Username\n"
+			<< "\tlog_location               :: String :: Location of the CloD Log File\n"
+			<< "\toutput_dir                 :: String :: Directory to save the output file\n"
+			<< "\toutput_name                :: String :: Output file name. Useful for GUIs. Best left at \"null\" for terminal useage\n"
+			<< "\t_outputFile                :: Bool   :: Should the programme save an output file?\n"
+			<< "\t_debugInfo                 :: Bool   :: Show Additional Debug Information\n"
+			<< "\t_allInfo                   :: Bool   :: Prints out the log file as is. No reason to use this programme if this is enabled, but each to his own\n"
+			<< "\t_playerConnectionInfo      :: Bool   :: Shows related player connection information\n"
+			<< "\t_otherPlayerConnectionInfo :: Bool   :: Shows unrelated player connection information\n"
+			<< "\t_sideSwitchInfo            :: Bool   :: Shows related player side-switch information\n"
+			<< "\t_otherPlayerSideSwitchInfo :: Bool   :: Shows unrelated player side-switch information\n"
+			<< "\t_newMissionLoadInfo        :: Bool   :: Shows new missions being loaded information\n"
+			<< "\t_newMissionInfo            :: Bool   :: Shows new mission information\n"
+			<< "\t_battleStartedInfo         :: Bool   :: Shows a battle being started\n"
+			<< "\t_battleEndInfo             :: Bool   :: Shows a battle ending\n"
+			<< "\t_destructionInfo           :: Bool   :: Shows related vehicle destruction information\n"
+			<< "\t_destructionUnrelatedInfo  :: Bool   :: Shows unrelated vehicle destruction information\n"
+			<< "\t_landingInfo               :: Bool   :: Shows related landing information\n"
+			<< "\t_otherLandingInfo          :: Bool   :: Shows unrelated landing information\n"
+			<< "\t_bailInfo                  :: Bool   :: Shows related bail-out information\n"
+			<< "\t_otherBailInfo             :: Bool   :: Shows unrelated bail-out information\n"
+			<< "\t_crashInfo                 :: Bool   :: Shows related crash information\n"
+			<< "\t_otherCrashInfo            :: Bool   :: Shows unrelated crash information\n"
+			<< "\t_otherPlayerStats          :: Bool   :: Shows other player statistics; Useful for multiplayer missions\n"
+			<< "\t_showChat                  :: Bool   :: Shows game chat; On 'social' multiplayer missions there may be unnecessary clutter\n"
+			<< "\t_colour                    :: Bool   :: Enable colour. If SAS is used with a GUI this is not required.\n"
+			<< "\t_colourFG                  :: Bool   :: If true the colour will be applied to the foreground/font.\n"
+			<< "\t_headless                  :: Bool   :: If true then _outputFile will be forced to true.\n";
+		return 0;
 	}
-	else if (user_system == "Linux")
+    else
+    {
+        // Checks if the right amount of arguments are there
+        if (argc == 29)
+        {
+			username = argv[1];
+            log_location = argv[2];
+            output_dir = argv[3];
+			output_name = argv[4];
+            _outputFile = strToBool(argv[5]);
+            _debugInfo = strToBool(argv[6]);
+            _allInfo = strToBool(argv[7]);
+            _playerConnectionInfo = strToBool(argv[8]);
+            _otherPlayerConnectionInfo = strToBool(argv[9]);
+            _sideSwitchInfo = strToBool(argv[10]);
+            _otherPlayerSideSwitchInfo = strToBool(argv[11]);
+            _newMissionLoadInfo = strToBool(argv[12]);
+            _newMissionInfo = strToBool(argv[13]);
+            _battleStartedInfo = strToBool(argv[14]);
+            _battleEndInfo = strToBool(argv[15]);
+            _destructionInfo = strToBool(argv[16]);
+            _destructionUnrelatedInfo = strToBool(argv[17]);
+            _landingInfo = strToBool(argv[18]);
+            _otherLandingInfo = strToBool(argv[19]);
+            _bailInfo = strToBool(argv[20]);
+            _otherBailInfo = strToBool(argv[21]);
+            _crashInfo = strToBool(argv[22]);
+            _otherCrashInfo = strToBool(argv[23]);
+            _otherPlayerStats = strToBool(argv[24]);
+            _showChat = strToBool(argv[25]);
+            _colour = strToBool(argv[26]);
+            _colourFG = strToBool(argv[27]);
+			_headless = strToBool(argv[28]);
+			if (_headless) { _outputFile = true; }
+        }
+        else
+        {
+            std::cout << "--!  Boffin Leader from Boffin 3. My engine's dead. Bailing out!\n     Boffin 3 from Boffin Leader! You silly -------! You forgot to enter in the right amount of arguments again!\n";
+			output_lines.push_back("--!  Boffin Leader from Boffin 3. My engine's dead. Bailing out!\n     Boffin 3 from Boffin Leader! You silly -------! You forgot to enter in the right amount of arguments again!");
+        }
+    }
+
+	// Print vars if _debugInfo is true
+	if (_debugInfo)
 	{
-		exec_location = argv_str.substr(0, argv_str.find_last_of("/"));
-		config_location = exec_location + "/config/config.txt";
+		output_lines.push_back("");
+		output_lines.push_back("Argument Values: ");
+        std::cout << "\n--!  Username: " << username << "\n";
+		output_lines.push_back("--!  Username: " + username);
+        std::cout << "--!  Log Location: " << log_location << "\n";
+		output_lines.push_back("--!  Log Location: " + log_location);
+        std::cout << "--!  Output Directory: " << output_dir << "\n";
+		output_lines.push_back("--!  Output Directory: " + output_dir);
+		std::cout << "--!  Output Filename: " + output_name << "\n";
+		output_lines.push_back("--!  Output Filename: " + output_name);
+        std::cout << "--!  Output File?: " << _outputFile << "\n";
+		output_lines.push_back("--!  Output File?: " + std::to_string((int)_outputFile));
+        std::cout << "--!  Debug Info?: " << _debugInfo << "\n";
+		output_lines.push_back("--!  Debug Info?: " + std::to_string((int)_outputFile));
+        std::cout << "--!  All Info?: " << _allInfo << "\n";
+		output_lines.push_back("--!  All Info?: " + std::to_string((int)_allInfo));
+        std::cout << "--!  Player Connection Info?: " << _playerConnectionInfo << "\n";
+		output_lines.push_back("--!  Player Connection Info?: " + std::to_string((int)_playerConnectionInfo));
+        std::cout << "--!  Other Player Connection Info?: " << _otherPlayerConnectionInfo << "\n";
+		output_lines.push_back("--!  Other Player Connection Info?: " + std::to_string((int)_otherPlayerConnectionInfo));
+        std::cout << "--!  Side Switch Info?: " << _sideSwitchInfo << "\n";
+		output_lines.push_back("--!  Side Switch Info?: " + std::to_string((int)_sideSwitchInfo));
+        std::cout << "--!  Other Side Switch Info?: " << _otherPlayerSideSwitchInfo << "\n";
+		output_lines.push_back("--!  Other Side Switch Info?: " + std::to_string((int)_otherPlayerSideSwitchInfo));
+        std::cout << "--!  New Mission Load Info?: " << _newMissionLoadInfo << "\n";
+		output_lines.push_back("--!  New Mission Load Info?: " + std::to_string((int)_newMissionLoadInfo));
+        std::cout << "--!  New Mission Info?: " << _newMissionInfo << "\n";
+		output_lines.push_back("--!  New Mission Info?: " + std::to_string((int)_newMissionInfo));
+        std::cout << "--!  Battle Start Info?: " << _battleStartedInfo << "\n";
+		output_lines.push_back("--!  Battle Start Info?: " + std::to_string((int)_battleStartedInfo));
+        std::cout << "--!  Battle End Info?: " << _battleEndInfo << "\n";
+		output_lines.push_back("--!  Battle End Info?: " + std::to_string((int)_battleEndInfo));
+        std::cout << "--!  Destruction Info?: " << _destructionInfo << "\n";
+		output_lines.push_back("--!  Destruction Info?: " + std::to_string((int)_destructionInfo));
+        std::cout << "--!  Other Destruction Info?: " << _destructionUnrelatedInfo << "\n";
+		output_lines.push_back("--!  Other Destruction Info?: " + std::to_string((int)_destructionUnrelatedInfo));
+        std::cout << "--!  Landing Info?: " << _landingInfo << "\n";
+		output_lines.push_back("--!  Landing Info?: " + std::to_string((int)_landingInfo));
+        std::cout << "--!  Other Landing Info?: " << _otherLandingInfo << "\n";
+		output_lines.push_back("--!  Other Landing Info?: " + std::to_string((int)_otherLandingInfo));
+        std::cout << "--!  Bail Info?: " << _bailInfo << "\n";
+		output_lines.push_back("--!  Bail Info?: " + std::to_string((int)_bailInfo));
+        std::cout << "--!  Other Bail Info?: " << _otherBailInfo << "\n";
+		output_lines.push_back("--!  Other Bail Info?: " + std::to_string((int)_otherBailInfo));
+        std::cout << "--!  Crash Info?: " << _crashInfo << "\n";
+		output_lines.push_back("--!  Crash Info?: " + std::to_string((int)_crashInfo));
+        std::cout << "--!  Other Crash Info?: " << _otherCrashInfo << "\n";
+		output_lines.push_back("--!  Other Crash Info?: " + std::to_string((int)_otherCrashInfo));
+        std::cout << "--!  Other Player Stats?: " << _otherPlayerStats << "\n";
+		output_lines.push_back("--!  Other Player Stats?: " + std::to_string((int)_otherPlayerStats));
+        std::cout << "--!  Show Chat?: " << _showChat << "\n";
+		output_lines.push_back("--!  Show Chat?: " + std::to_string((int)_showChat));
+        std::cout << "--!  Colour?: " << _colour << "\n";
+		output_lines.push_back("--!  Colour?: " + std::to_string((int)_colour));
+        std::cout << "--!  Colour Foreground?: " << _colourFG << "\n";
+		output_lines.push_back("--!  Colour Foreground?: " + std::to_string((int)_colourFG));
+		std::cout << "--!  Headless?: " << _headless << "\n";
+		output_lines.push_back("--!  Headless?: " + std::to_string((int)_headless));
+		std::cout << "\n";
+		output_lines.push_back("");
 	}
 
 	// Main programme
 	if (!_OSUnsupported)
 	{
-		load_config();
-		if (_colour)
-		{
-		std::cout << "\n\033[32;40mRamble's CloD \033[31;40mServer \033[37;40mActivity \033[34;40mStatistics\033[32;40m - " << version << "\033[39m\033[49m\n";
-		}
-		else
-		{
-			std::cout << "\nRamble's CloD Server Activity Statistics - " << version << "\n";
-		}
-		std::cout << "Last Updated: "<< last_updated << "; CloD Version: " << game_ver << ";\n\n";
+		if (_colour) { std::cout << "\n\033[32;40mRamble's CloD \033[31;40mServer \033[37;40mActivity \033[34;40mStatistics\033[32;40m - " << version << "\033[39m\033[49m\n"; }
+		else { std::cout << "\nRamble's CloD Server Activity Statistics - " << version << "\n"; }
+		output_lines.push_back("Ramble's CloD Server Activity Statistics - " + version);
+
+		std::cout << "Last Updated: " << last_updated << "; CloD Version: " << game_ver << ";\n\n";
+		output_lines.push_back("Last Updated: " + last_updated + "; CloD Version: " + game_ver);
+
 		load_log();
 		process_log();
-		printProcLog();
+	}
+	printProcLog();
+	if (_outputFile)
+	{
+		saveFile();
 	}
 }
 
@@ -198,96 +348,57 @@ void clr()
 	}
 }
 
-std::string getConfVal(std::string conf_line)
+bool strToBool(const std::string& str)
 {
-	std::string line = conf_line;
-	int x = line.find_last_of("=");
-	line = line.substr(x + 1);
-	return line;
+    return std::stoi(str);
 }
 
-void load_config()
+// If "timeMode" is "true" then the ":"s in the string will be replaced with "-"s
+std::string getDateTime(bool timeMode)
 {
-	std::fstream config(config_location, std::ios::in);
-	// Checks if "log.txt" is found or not
-	if (!config.is_open()) { std::cout << "--! \"config.txt\" was not found.\n--> Please enter the correct location for \"config.txt\"!\n"; }
-	else { std::cout << "--! \"config.txt\" was opened successfully!\n"; }
-
-	// Write "log" to "log_contents"
-	while (std::getline(config, config_lines)) { config_contents.push_back(config_lines); }
-	// Checks for end of file
-	if (config.eof()) { std::cout << "--! Finished loading \"config.txt\"!\n\n"; }
-	else { std::cout << "--! Error reading \"config.txt\"; Failed to load it into the programme!\n\n"; }
-	// Closes "log.txt"
-	config.close();
-
-	// Sets vars
-	log_location = getConfVal(config_contents[0]);
-	username = getConfVal(config_contents[1]);
-	std::istringstream(getConfVal(config_contents[2])) >> std::boolalpha >> _debugInfo;
-	std::istringstream(getConfVal(config_contents[3])) >> std::boolalpha >> _allInfo;
-	std::istringstream(getConfVal(config_contents[4])) >> std::boolalpha >> _playerConnectionInfo;
-	std::istringstream(getConfVal(config_contents[5])) >> std::boolalpha >> _otherPlayerConnectionInfo;
-	std::istringstream(getConfVal(config_contents[6])) >> std::boolalpha >> _sideSwitchInfo;
-	std::istringstream(getConfVal(config_contents[7])) >> std::boolalpha >> _otherPlayerSideSwitchInfo;
-	std::istringstream(getConfVal(config_contents[8])) >> std::boolalpha >> _newMissionLoadInfo;
-	std::istringstream(getConfVal(config_contents[9])) >> std::boolalpha >> _newMissionInfo;
-	std::istringstream(getConfVal(config_contents[10])) >> std::boolalpha >> _battleStartedInfo;
-	std::istringstream(getConfVal(config_contents[11])) >> std::boolalpha >> _battleEndInfo;
-	std::istringstream(getConfVal(config_contents[12])) >> std::boolalpha >> _destructionInfo;
-	std::istringstream(getConfVal(config_contents[13])) >> std::boolalpha >> _destructionUnrelatedInfo;
-	std::istringstream(getConfVal(config_contents[14])) >> std::boolalpha >> _landingInfo;
-	std::istringstream(getConfVal(config_contents[15])) >> std::boolalpha >> _otherLandingInfo;
-	std::istringstream(getConfVal(config_contents[16])) >> std::boolalpha >> _bailInfo;
-	std::istringstream(getConfVal(config_contents[17])) >> std::boolalpha >> _otherBailInfo;
-	std::istringstream(getConfVal(config_contents[18])) >> std::boolalpha >> _crashInfo;
-	std::istringstream(getConfVal(config_contents[19])) >> std::boolalpha >> _otherCrashInfo;
-	std::istringstream(getConfVal(config_contents[20])) >> std::boolalpha >> _otherPlayerStats;
-	std::istringstream(getConfVal(config_contents[21])) >> std::boolalpha >> _showChat;
-	std::istringstream(getConfVal(config_contents[22])) >> std::boolalpha >> _colour;
-	std::istringstream(getConfVal(config_contents[23])) >> std::boolalpha >> _colourFG;
-
-	// Print vars if _debugInfo is true
-	if (_debugInfo)
-	{
-		std::cout << "--! Log Location: \"" << log_location << "\".\n";
-		std::cout << "--! Steam Username: \"" << username << "\".\n";
-		std::cout << "--! Show Debug Info: \"" << _debugInfo << "\".\n";
-		std::cout << "--! Show All Info: \"" << _allInfo << "\".\n";
-		std::cout << "--! Show Player Connection Info: \"" << _playerConnectionInfo << "\".\n";
-		std::cout << "--! Show Other Player Connection Info: \"" << _otherPlayerConnectionInfo << "\".\n";
-		std::cout << "--! Show New Mission Loading Info: \"" << _newMissionLoadInfo << "\".\n";
-		std::cout << "--! Show New Mission Info: \"" << _newMissionInfo << "\".\n";
-		std::cout << "--! Show Battle Start Info: \"" << _battleStartedInfo << "\".\n";
-		std::cout << "--! Show Battle End Info: \"" << _battleEndInfo << "\".\n";
-		std::cout << "--! Show Destruction Info: \"" << _destructionInfo << "\".\n";
-		std::cout << "--! Show Unrelated Destruction Info: \"" << _destructionUnrelatedInfo << "\".\n";
-		std::cout << "--! Show Landing Info: \"" << _landingInfo << "\".\n";
-		std::cout << "--! Show Unrelated Landing Info: \"" << _otherLandingInfo << "\".\n";
-		std::cout << "--! Show Bail-Out Info: \"" << _bailInfo << "\".\n";
-		std::cout << "--! Show Unrelated Bail-Out Info: \"" << _otherBailInfo << "\".\n";
-		std::cout << "--! Show Crash Info: \"" << _crashInfo << "\".\n";
-		std::cout << "--! Show Unrelated Crash Info: \"" << _otherCrashInfo << "\".\n";
-		std::cout << "--! Show Other Player Profiles: \"" << _otherPlayerStats << "\".\n";
-		std::cout << "--! Show Chat: \"" << _showChat << "\".\n";
-		std::cout << "--! Colour Enabled: \"" << _colour << "\"\n";
-		std::cout << "--! Colour Mode: \"" << _colourFG << "\"\n";
-		std::cout << "\n";
-	}
+	// Gets the date and time and saves it to a string
+	auto const time = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
+	std::string dateTime = std::format("{:%Y-%m-%d_%X}", time);
+	// Checks if the ":"s need to be replaced
+	if (timeMode) { for (int i = 0; i < dateTime.length(); i++) { if (dateTime[i] == ':') { dateTime[i] = '-'; } } }
+	// Returns the time
+	return dateTime;
 }
 
 void load_log()
 {
 	std::fstream log(log_location, std::ios::in);
 	// Checks if "log.txt" is found or not
-	if (!log.is_open() && _debugInfo) { std::cout << "--! \"log.txt\" was not found.\n--> Please enter the correct location for \"log.txt\"!\n"; }
-	else { if (_debugInfo) { std::cout << "--! \"log.txt\" was opened successfully!\n"; } }
+	if (!log.is_open() && _debugInfo)
+	{
+		std::cout << "--! \"log.txt\" was not found.\n--> Please enter the correct location for \"log.txt\"!\n";
+		output_lines.push_back("--! \"log.txt\" was not found.\n--> Please enter the correct location for \"log.txt\"!");
+	}
+	else
+	{
+		if (_debugInfo)
+		{
+			std::cout << "--! \"log.txt\" was opened successfully!\n";
+			output_lines.push_back("--! \"log.txt\" was opened successfully!");
+		}
+	}
 
 	// Write "log" to "log_contents"
 	while (std::getline(log, log_lines)) { log_contents.push_back(log_lines); }
 	// Checks for end of file
-	if (log.eof() && _debugInfo) { std::cout << "--! Finished loading \"log.txt\"!\n\n"; }
-	else { if (_debugInfo) { std::cout << "--! Error reading \"log.txt\"; Failed to load it into the programme!\n\n"; } }
+	if (log.eof() && _debugInfo)
+	{
+		std::cout << "--! Finished loading \"log.txt\"!\n\n";
+		output_lines.push_back("--! Finished loading \"log.txt\"!");
+	}
+	else
+	{
+		if (_debugInfo)
+		{
+			std::cout << "--! Error reading \"log.txt\"; Failed to load it into the programme!\n\n";
+			output_lines.push_back("--! Error reading \"log.txt\"; Failed to load it into the programme!");
+		}
+	}
 	// Closes "log.txt"
 	log.close();
 }
@@ -397,7 +508,8 @@ void printProcLog()
 	// # = Connection/Side Switch
 	// >> = Chat
 	// --> =
-	for (auto i : log_processed)
+	output_lines.push_back("");
+	for (auto& i : log_processed)
 	{
 		if (_colour)
 		{
@@ -405,10 +517,10 @@ void printProcLog()
 			{
 				// Font
 				if (i.find("*") != std::string::npos) { std::cout << "\033[31;40m" << i << "\033[39m\033[49m\n"; } // Red
-				else if (i.find("^") !=std::string::npos) {	std::cout << "\033[94;40m" << i << "\033[39m\033[49m\n"; } // Bright Blue
+				else if (i.find("^") != std::string::npos) { std::cout << "\033[94;40m" << i << "\033[39m\033[49m\n"; } // Bright Blue
 				else if (i.find("#") != std::string::npos) { std::cout << "\033[96;40m" << i << "\033[39m\033[49m\n"; } // Bright Cyan
 				else if (i.find(">>") != std::string::npos) { std::cout << i << "\n"; } // No Colour : Chat
-				else if (i.find("-->") != std::string::npos) { std::cout << "\033[91;40m" << i << "\033[39m\033[49m\n";	} // Bright Red
+				else if (i.find("-->") != std::string::npos) { std::cout << "\033[91;40m" << i << "\033[39m\033[49m\n"; } // Bright Red
 				else if (i.find("!") != std::string::npos) { std::cout << "\033[92;40m" << i << "\033[39m\033[49m\n"; } // Bright Green
 				else if (i.find("=") != std::string::npos) { std::cout << "\033[32;40m" << i << "\033[39m\033[49m\n"; } // Green
 				else if (i.find("_") != std::string::npos) { std::cout << "\033[93;40m" << i << "\033[39m\033[49m\n"; } // Bright Yellow
@@ -417,8 +529,8 @@ void printProcLog()
 			else
 			{
 				// Background
-				if (i.find("*") != std::string::npos) {	std::cout << "\033[30;41m" << i << "\033[39m\033[49m\n"; } // Red
-				else if (i.find("^") !=std::string::npos) { std::cout << "\033[30;104m" << i << "\033[39m\033[49m\n"; } // Bright Blue
+				if (i.find("*") != std::string::npos) { std::cout << "\033[30;41m" << i << "\033[39m\033[49m\n"; } // Red
+				else if (i.find("^") != std::string::npos) { std::cout << "\033[30;104m" << i << "\033[39m\033[49m\n"; } // Bright Blue
 				else if (i.find("#") != std::string::npos) { std::cout << "\033[30;106m" << i << "\033[39m\033[49m\n"; } // Bright Cyan
 				else if (i.find(">>") != std::string::npos) { std::cout << i << "\n"; } // No Colour : Chat
 				else if (i.find("-->") != std::string::npos) { std::cout << "\033[30;101m" << i << "\033[39m\033[49m\n"; } // Bright Red
@@ -432,7 +544,9 @@ void printProcLog()
 		{
 			std::cout << i << "\n";
 		}
+		output_lines.push_back(i);
 	}
+	output_lines.push_back("\nPlayer Statistics:");
 
 	// Prints player list
 	std::cout << "\n";
@@ -450,6 +564,18 @@ void printProcLog()
 				<< "\n%  With a recorded \"" << session_players[i][8] << "\" connection(s)."
 				<< "\n%  With a recorded \"" << session_players[i][9] << "\" disconnection(s)."
 				<< "\n%  With a recorded \"" << session_players[i][10] << "\" message(s) sent.\n";
+			//
+			output_lines.push_back("-> User: \"" + session_players[i][0] + "\"");
+			output_lines.push_back("#  Last recorded on the \"" + session_players[i][1] + "\" team.");
+			output_lines.push_back("*  With a recorded score of \"" + session_players[i][2] + "\".");
+			output_lines.push_back("-  With a recorded landing count of: \"" + session_players[i][3] + "\".");
+			output_lines.push_back("!  With a recorded \"" + session_players[i][5] + "\" death(s).");
+			output_lines.push_back("!  With a recorded \"" + session_players[i][6] + "\" crash(es).");
+			output_lines.push_back("!  With a recorded \"" + session_players[i][7] + "\" bail-out(s).");
+			output_lines.push_back("%  With a recorded \"" + session_players[i][8] + "\" connection(s).");
+			output_lines.push_back("%  With a recorded \"" + session_players[i][9] + "\" disconnection(s).");
+			output_lines.push_back("%  With a recorded \"" + session_players[i][10] + "\" message(s) sent.");
+			output_lines.push_back("");
 		}
 		else
 		{
@@ -465,10 +591,65 @@ void printProcLog()
 					<< "\n%  With a recorded \"" << session_players[i][8] << "\" connection(s)."
 					<< "\n%  With a recorded \"" << session_players[i][9] << "\" disconnection(s)."
 					<< "\n%  With a recorded \"" << session_players[i][10] << "\" message(s) sent.\n";
+					//
+				output_lines.push_back("-> User: \"" + session_players[i][0] + "\"");
+				output_lines.push_back("#  Last recorded on the \"" + session_players[i][1] + "\" team.");
+				output_lines.push_back("*  With a recorded score of \"" + session_players[i][2] + "\".");
+				output_lines.push_back("-  With a recorded landing count of: \"" + session_players[i][3] + "\".");
+				output_lines.push_back("!  With a recorded \"" + session_players[i][5] + "\" death(s).");
+				output_lines.push_back("!  With a recorded \"" + session_players[i][6] + "\" crash(es).");
+				output_lines.push_back("!  With a recorded \"" + session_players[i][7] + "\" bail-out(s).");
+				output_lines.push_back("%  With a recorded \"" + session_players[i][8] + "\" connection(s).");
+				output_lines.push_back("%  With a recorded \"" + session_players[i][9] + "\" disconnection(s).");
+				output_lines.push_back("%  With a recorded \"" + session_players[i][10] + "\" message(s) sent.");
+				output_lines.push_back("");
 			}
 		}
 	}
 }
+
+void saveFile()
+	{
+		std::ofstream file;
+		// Combines the save location with the name that the file should be and the extension
+		std::string file_name;
+		if (output_name == "null")
+		{
+			// Sets unique filename
+			if (user_system == "Linux") { file_name = output_dir + "/" + getDateTime(true) + ".txt"; }
+			else if (user_system == "Windows") { file_name = output_dir + "\\" + getDateTime(true) + ".txt";}
+		}
+		else
+		{
+			// Sets file name to user set one
+			file_name = output_dir + "\\" + output_name + ".txt";
+		}
+		// Attempts to open/create file
+		file.open(file_name);
+
+		// Checks if the file was opened successfully
+		if (_debugInfo)
+		{
+    		if (file.is_open())
+    		{
+        		std::cout << "--! Mission File Successfully Created: \"" << file_name << "\"\n";
+    		}
+    		else
+			{
+        		std::cout << "--! Mission File Failed To Create!\n";
+    		}
+		}
+
+		// Writes the lines from output_lines to the file
+		for (auto& i : output_lines)
+		{
+    		file << i;
+    		file << std::endl;
+		}
+
+		// Closes the file
+		file.close();
+	}
 
 std::string getDateTime(std::string string)
 {
@@ -669,7 +850,7 @@ void playerSideSwitchInfo(std::string string)
 		else
 		{
 			if (element.find(username) != std::string::npos && _sideSwitchInfo)
-		{
+			{
 				log_processed.push_back("# At " + time + " " + get_name + " enlisted in the " + get_side + " forces.");
 			}
 		}
@@ -914,7 +1095,7 @@ void landingInfo(std::string string)
 			}
 		}
 		// Adds the player to the list if not already and adds to connection count
-		if (get_name != "AI" && get_name != "a friendly AI" && get_name.find("(AI)") == std::string::npos) 
+		if (get_name != "AI" && get_name != "a friendly AI" && get_name.find("(AI)") == std::string::npos)
 		{
 			checkPlayerInList(get_name);
 			addPlayerLanding(get_name);
@@ -1104,7 +1285,7 @@ void crashInfo(std::string string)
 			}
 			else
 			{
-				if (element.find(username) != std::string::npos && _crashInfo) 
+				if (element.find(username) != std::string::npos && _crashInfo)
 				{
 					log_processed.push_back(message);
 				}
@@ -1532,7 +1713,7 @@ void destructionInfo(std::string string)
 			checkPlayerInList(get_name);
 			addPlayerDeath(get_name);
 		}
-		else if (element_mod.find(" in a ") != std::string::npos) 
+		else if (element_mod.find(" in a ") != std::string::npos)
 		{
 			// Gets name and aircraft
 			x = 0;
@@ -2693,7 +2874,7 @@ void destructionInfo(std::string string)
 			std::string get_name = destroyed.substr(0, destroyed.length() - 1);
 			// Set message
 			destroyed = get_name + " in a " + get_aircraft + ".";
-			
+
 			// Checks if player is in player list and adds score
 			if (get_name != "AI" && get_name != "a friendly AI" && get_name.find("(AI)") == std::string::npos)
 			{
@@ -3781,7 +3962,9 @@ void checkPlayerInList(std::string player_name)
 	{
 		// Checks if player is in list
 		if (session_players[i][0] == player_name)
-		{ _inList = true; }
+		{
+			_inList = true;
+		}
 	}
 	// If not in list
 	if (!_inList)
@@ -3795,8 +3978,8 @@ void changePlayerSide(std::string player_name, std::string player_side)
 	for (int i = 0; i < session_players.size(); i++)
 	{
 		// Checks if player is in list
-		if (session_players[i][0] == player_name) 
-	{
+		if (session_players[i][0] == player_name)
+		{
 			session_players[i][1] = player_side;
 		}
 	}
@@ -3894,12 +4077,12 @@ void addPlayerMessageSent(std::string player_name)
 int findStrIndex(const std::string& str, const std::string& sub_str)
 {
 	std::string::size_type index = str.find(sub_str, 0);
-    if (index != std::string::npos)
+	if (index != std::string::npos)
 	{
-        return index;
-    }
-    else
+		return index;
+	}
+	else
 	{
-        return -1;
-    }
+		return -1;
+	}
 }
