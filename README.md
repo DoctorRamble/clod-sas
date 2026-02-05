@@ -87,7 +87,7 @@ If you rename it, make sure ".lnk" is still the extension at the end, this is th
 4. Open the script file in the text editor of your choice and enter in the following:
 ```
 	#! /bin/bash
-	gnome-terminal -- bash -c "/home/ramble/Documents/SAS/sas "your_steam_username" ".../il-2 sturmovik cliffs of dover/log.txt" "/home/ramble/Desktop/SAS Output/" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0"; exec bash"
+	gnome-terminal -- bash -c "/home/ramble/Documents/SAS/sas" "your_steam_username" ".../il-2 sturmovik cliffs of dover/log.txt" "/home/ramble/Desktop/SAS Output/" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0"; exec bash"
 ```
 To see what the arguments do go here: [Explaining the Arguments](#explaining-the-arguments)
 
