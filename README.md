@@ -89,6 +89,12 @@ If you rename it, make sure ".lnk" is still the extension at the end, this is th
 #! /bin/bash
 gnome-terminal -- bash -c "/home/ramble/Desktop/Dev/clod-sas-arg/clod-sas-main/sas Doctor_Ramble /home/ramble/Desktop/log.txt /home/ramble/Desktop/SASOutput/ null 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0; exec bash"
 ```
+or the following for colour:
+```
+#! /bin/bash
+gnome-terminal -- bash -c "/home/ramble/Desktop/Dev/clod-sas-arg/clod-sas-main/sas Doctor_Ramble /home/ramble/Desktop/log.txt /home/ramble/Desktop/SASOutput/ null 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0; exec bash"
+```
+
 Replace the directories with your own.
 With this command you have to make sure NOT to have any spaces in it. Such as: "/home/ramble/Desktop/SAS Output/", instead, "/home/ramble/Desktop/SASOutput/"
 
