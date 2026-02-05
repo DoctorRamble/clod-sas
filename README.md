@@ -100,7 +100,7 @@ gnome-terminal -- bash -c "/home/ramble/Desktop/Dev/clod-sas-arg/clod-sas-main/s
 ```
 
 Replace the directories with your own.
-With this command you have to make sure NOT to have any spaces in it. Such as: "/home/ramble/Desktop/SAS Output/", instead, "/home/ramble/Desktop/SASOutput/"
+With this command you have to make sure NOT to have any spaces in it. E.g. "/home/ramble/Desktop/SASOutput/" instead of "/home/ramble/Desktop/SAS Output/"
 
 For the log.txt you will have to create a symbolic link to get around the "no spaces" rule. Take note of the directory your log.txt sits in and create a symlink to a directory (that has no spaces in it). Example:
 ```
