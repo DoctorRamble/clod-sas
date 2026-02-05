@@ -125,7 +125,7 @@ ALL DONE! You can now use the programme! Happy flying!
 Important arguments:
 1. Your steam username :: E.g. "Linux_1234"
 2. Path to your log file :: E.g. "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt"
-3. Directory to save the outputted log files :: E.g. "C:\Users\Ramble\Desktop\SAS Output\\" :: Make sure to put two slashes on the end!
+3. Directory to save the outputted log files :: E.g. "C:\Users\Ramble\Desktop\SAS Output\\\\" :: Make sure to put two slashes on the end!
 4. Name of the outputted txt :: Best kept at null, this means the programme will generate a unique name
 
 You can find more information by running the command 'sas help'.
