@@ -2,6 +2,8 @@
 
 Statistics for "IL-2 Sturmovik: Cliffs of Dover BLITZ".
 
+Be sure to check out ["Ramble's SAS GUI" for Windows](https://github.com/DoctorRamble/clod-sas-gui)!
+
 ## Contents
 * [About This Programme](#about-this-programme)
 * [Installation](#installation)
