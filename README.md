@@ -102,6 +102,7 @@ For the log.txt you will have to create a symbolic link to get around the "no sp
 ```
 ln -s "/home/ramble/.steam/debian-installation/steamapps/compatdata/754530/pfx/drive_c/users/steamuser/Documents/1C SoftClub/il-2 sturmovik cliffs of dover/log.txt" log.txt
 ```
+This will create a 'link' to log.txt in the directory you run that command.
 
 To see what the arguments do go here: [Explaining the Arguments](#explaining-the-arguments)
 or type './sas help'
