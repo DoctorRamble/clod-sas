@@ -59,6 +59,8 @@ If you have installed everything correctly, typing `g++ --version` into the term
 You will not be able to open the programme by clicking on it. You will need to go into the terminal and run it from there using command-line arguments.
 Creating the following .bat/.sh script file will allow you to run the programme by clicking on it instead.
 
+Windows users, please check out [SAS GUI](https://github.com/DoctorRamble/clod-sas-gui)! It is much easier to set-up than this!
+
 ### Windows: .bat File
 1. In the folder that contains the executable file, create a new file called "run_sas.bat". It is important that you create this file INSIDE of the SAME folder that the executable is in!
 
