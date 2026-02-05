@@ -139,7 +139,7 @@ sas "Doctor_Ramble" "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs
 * Please note that this programme may not work on all terminals, operating systems, distros or desktop environments.
 
 ## Contact Info
-If you need any support or have found bugs you can reach me on the Cliffs of Dover ATAG Forums [Profile](https://theairtacticalassaultgroup.com/forum/member.php?u=19096) [Thread](https://theairtacticalassaultgroup.com/forum/showthread.php?t=39090&p=402785#post402785) or the IL-2 Sturmovik Forums [Profile](https://forum.il2sturmovik.com/profile/433135-doctor_ramble/). I also have an email: "DRamble46@outlook.com", but please only use this if you have to (and no spam/junk please!).
+If you need any support or have found bugs you can reach me on the Cliffs of Dover ATAG Forums [Profile](https://theairtacticalassaultgroup.com/forum/member.php?u=19096) [Thread](https://theairtacticalassaultgroup.com/forum/showthread.php?t=39090&p=402785#post402785) or the IL-2 Sturmovik Forums [Profile](https://forum.il2-series.com/profile/1826-doctor_ramble/).
 I will do my best to get back to you as soon as possible.
 If it is bug-related, please include the contents of your "log.txt" file (or at least the line that is broken) and your OS and Debug information (can be enabled by setting "Debug_Info" argument value to "true").
 
