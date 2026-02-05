@@ -10,11 +10,11 @@ Statistics for "IL-2 Sturmovik: Cliffs of Dover BLITZ".
 * [Programme Launch Script File](#creating-a-script-file-to-easily-run-the-programme)
 	--> [.BAT Script for Windows](#windows-bat-file)
 	--> [.SH Script for Linux](#linux-sh-file)
+* [Explaining the Arguments](#explaining-the-arguments)
 * [Notes](#notes)
 * [Contact Information](#contact-info)
 * [About the Code](#about-the-code)
 * [Known Limitations and Bugs](#known-limitationsbugs)
-* [About "config.txt"](#configtxt)
 * [How the programme works](#how-this-programme-works)
 * [Ackknowledgements](#acknowledgements)
 
@@ -31,30 +31,12 @@ Some information includes vehicle destruction information, bail out information 
 1. Clone/download the repository
 
 2. Navigate to the directory you downloaded the project to.
-You should see this directory tree:
-```
-|__ Main Project Directory/
-|  |_ main.cpp
-|  |_ config/
-|  | |_ config.txt
-```
 
-3. Navigate to "config/" and edit the "config.txt".
-For now, you can leave most of the variables as their defaults,
-but change the Log Location value to the location of your log file,
-e.g.: `C:\Users\YourUser\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt`
-Also change the Steam Username to your Steam username. You can optionally leave this as "NULL".
+3. Compile main.cpp: `g++ --std=c++20 main.cpp -o sas`
 
-4. Navigate back to the main project directory of the programme (where the .cpp file is).
-Compile main.cpp: `g++ --std=c++20 main.cpp -o sas`
+4. After compiling you should see an executable file.
 
-5. After compiling you should see an executable file.
-Open your terminal and navigate to the root directory of the programme if you are not there already.
-Enter the following:
-Linux: `./sas`
-Windows: `sas.exe`
-
-This should successfully run the programme, allowing you to summarise your previous CloD session.
+5. Go to [programme launch script file](#creating-a-script-file-to-easily-run-the-programme) to see how to run the programme.
 
 ## C++ Compiler Installation
 If you don't already have a C++ compiler installed on your system, follow these instructions:
@@ -72,7 +54,7 @@ You do not need to install Visual Studio Code.
 If you have installed everything correctly, typing `g++ --version` into the terminal should return a result.
 
 ## Creating a script file to easily run the programme
-You will not be able to open the programme by clicking on it. You will need to go into the terminal and run it from there.
+You will not be able to open the programme by clicking on it. You will need to go into the terminal and run it from there using command-line arguments.
 Creating the following .bat/.sh script file will allow you to run the programme by clicking on it instead.
 
 ### Windows: .bat File
@@ -81,9 +63,11 @@ Creating the following .bat/.sh script file will allow you to run the programme 
 2. Open "run_sas.bat" in notepad and enter in the following lines:
 ```
 	@echo off
-	start cmd /k "C:\Users\Ramble\Desktop\SAS\sas.exe"
+	start cmd /k "sas "your_steam_username" "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt" "C:\Users\Ramble\Desktop\SAS Output\\" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0""
+	#To End a string with a \, put two like so: \\
 ```
-You should replace the above location with the location of the programme on your computer!
+You should replace the above locations with the locations on your computer!
+To see what the arguments do go here: [Explaining the Arguments](#explaining-the-arguments)
 
 3. Going back to File Explorer, clicking the "run_sas.bat" file should open the terminal window and run the programme.
 
@@ -103,18 +87,33 @@ If you rename it, make sure ".lnk" is still the extension at the end, this is th
 4. Open the script file in the text editor of your choice and enter in the following:
 ```
 	#! /bin/bash
-	gnome-terminal -- bash -c "/home/ramble/Documents/SAS/sas; exec bash"
+	gnome-terminal -- bash -c "/home/ramble/Documents/SAS/sas "your_steam_username" ".../il-2 sturmovik cliffs of dover/log.txt" "/home/ramble/Desktop/SAS Output/" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0"; exec bash"
 ```
+To see what the arguments do go here: [Explaining the Arguments](#explaining-the-arguments)
+
 * You can replace "gnome-terminal" with the terminal that is installed on your system.
 This may not work on all terminals or desktop environments.
 I have tested this on the GNOME terminal and it works fine,
 but on Konsole it does not seem to work for me.
 Installing the `gnome-terminal` package on Fedora and running it through that works,
 but I have encountered some weird visual glitches, it might just be my system though.
-* You should replace "/home/ramble/Documents/SAS/sas" with the location of the programme on your system.
-Make sure the executable file is on the end. In this case it is "sas".
+* You should replace the above locations with the locations on your computer!
 
 ALL DONE! You can now use the programme! Happy flying!
+
+## Explaining the Arguments
+Important arguments:
+1. Your steam username :: E.g. "Linux_1234"
+2. Path to your log file :: E.g. "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt"
+3. Directory to save the outputted log files :: E.g. "C:\Users\Ramble\Desktop\SAS Output\\" :: Make sure to put two slashes on the end!
+4. Name of the outputted txt :: Best kept at null, this means the programme will generate a unique name
+
+You can find more information by running the command 'sas help'.
+
+An example run-command would be:
+```
+sas "Doctor_Ramble" "C:\Users\Ramble\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt" "C:\Users\Ramble\Desktop\SAS Output\\" "null" "1" "0" "0" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "1" "0" "0" "0"
+```
 
 ## Notes
 * Please note that this programme may not work on all terminals, operating systems, distros or desktop environments.
@@ -152,76 +151,6 @@ v1.0 has not been released. The version number will reach v1.0 whenever I feel l
 * If your username is, for example "Spitfire", then the programme may think any line with "Spitfire" in it is related to your username.
 * If your username contains, "(AI)" then the programme will think that you are an AI and will not add your player profile.
 * Some things work in Linux, but don't in Windows and vice versa. This is due to the way this programme was developed: some features were programmed in while I was using Linux, and some when I was using Windows. I cannot bug-test Windows and Linux equally, so if you find any bugs where information isn't displayed correctly, it may be due to this. Be sure to [contact me](#contact-info) about the error and include the broken line and your OS info.
-
-## "config.txt"
-This programme loads information from "./config/config.txt".
-It is a very primative config file system, but it does the job.
-I am not satisfied with this so I might eventually implement a better config loader system in the future.
-
-Otherwise this is how to use it:
-The config.txt file consists of "variable_name=value"
-The "variable_name" part is just there to make it easier to modify. The programme
-can function with "=value" alone.
-Boolean values accept a "true" or "false" value.
-
-### Lines:
-1. The Log Location :: String.
-Enter in the location of CloD's "log.txt" file.
-For Windows, it should be something like "C:\Users\username\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\"
-Append "log.txt" on the end. Example: "C:\Users\username\Documents\1C SoftClub\il-2 sturmovik cliffs of dover\log.txt".
-2. Your Steam Username :: String.
-Enter in your Steam username. Optional.
-This just allows the programme to see if a line is relevant to you.
-3. Debug Info :: Boolean value.
-If true some additional programme debug information will be shown.
-4. Show All Information :: Boolean value.
-If true the programme will not process the log file and will just print it out as is.
-5. Show Player Connection Info :: Boolean value.
-If true information about player connections and disconnections will be shown.
-6. Other Player Connection Info :: Boolean value.
-If false, only player connection information with your username in it will be shown.
-7. Show Player Side Switch Info :: Boolean value.
-If true, then information related to players joining/changing teams will be shown.
-8. Other Player Side Switch Info :: Boolean value.
-If false, only player side switch information related to you will be shown.
-9. New Mission Loading Info :: Boolean value.
-If true, information about new missions being loaded will be shown.
-10. New Mission Info :: Boolean value.
-If true, information about new missions that have been loaded will be shown.
-11. Show Battle Start Info :: Boolean value.
-If true, shows information about new battles that have been started.
-12. Show Battle End Info :: Boolean value.
-If true, shows information about battles ending.
-13. Show Destruction Info :: Boolean value.
-If true, shows information about vehicles being destroyed (shot down, sunk, etc.,)
-14. Show Unrelated Destruction Info :: Boolean value.
-If true, shows information about vehicles being destroyed even if it does not contain the player's username.
-15. Show Landing Info :: Boolean value.
-If true, shows information related to aircraft landing or crash landing.
-16. Show Unrelated Landing Info :: Boolean value.
-If true, shows information related to aircraft landing or crash landing even if it does not contain the player's username.
-17. Show Bail Info :: Boolean value.
-If true, shows information related to entities bailing out of an aircraft.
-16. Show Unrealted Bail Info :: Boolean value.
-If true, shows information related to entities bailing out of an aircraft even if it does not contain the player's username.
-18. Show Crash Info :: Boolean value.
-If true, shows information related to aircraft crashes.
-Does not include crash landing, that is classified as a "good" landing.
-19. Show Unrelated Crash Info :: Boolean value.
-If true, shows information related to aircraft crashes even if it does not contain the player's username.
-20. Show Other Player Profiles :: Boolean value.
-If true, other player's statistics will be shown. Useful for multiplayer rounds.
-If you are not the server admin, you may have joined after the round was started.
-In this case some information may be missing from before you joined.
-21. Show Chat :: Boolean value.
-If true, chat will be shown.
-22. Colour Enabled :: Boolean value.
-Some terminals support ANSI escape codes. This allows the results to be printed in colour.
-This allows for a better experience as you can differentiate the different categories from each other.
-Not all terminals support this feature though, including the Windows 10 CMD. In that case you will have to disable this feature.
-23. Colour FG Enabled :: Boolean value
-If Colour FG (Foreground) is true, the text will show the colour with a black background.
-If false, the text will be black with a coloured background.
 
 ## How this programme works
 This programme does not connect to CloD in any way.
